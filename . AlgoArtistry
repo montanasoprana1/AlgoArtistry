@@ -1,0 +1,32 @@
+from flask import Flask, render_template
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/visualize/bubble')
+def bubble_sort_visualization():
+    # Generate random data for visualization
+    array = np.random.randint(1, 100, size=20)
+    
+    # Create a plot
+    plt.figure(figsize=(10, 5))
+    plt.bar(range(len(array)), array, color='skyblue')
+    plt.title("Bubble Sort Visualization")
+    plt.xlabel("Index")
+    plt.ylabel("Value")
+    
+    # Save the figure
+    img_path = os.path.join('static', 'images', 'bubble_sort.png')
+    plt.savefig(img_path)
+    plt.close()
+    
+    return render_template('visualization.html', image='images/bubble_sort.png')
+
+if __name__ == '__main__':
+    app.run(debug=True)
